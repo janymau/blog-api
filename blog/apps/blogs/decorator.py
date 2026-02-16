@@ -1,0 +1,101 @@
+# Python modules
+from functools import wraps
+from typing import Any, Optional, Callable, Type, TypeVar
+
+# Django modules
+from django.db.models import Model, Manager, QuerySet
+from rest_framework.request import Request as DRFRequest
+from rest_framework.response import Response as DRFResponse
+from rest_framework.serializers import Serializer
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_429_TOO_MANY_REQUESTS
+from django.core.cache import cache
+
+
+
+
+# Project modules 
+
+
+
+T = TypeVar('T', bound=Model)
+
+def validate_serializer_data(
+        serializer_class: Serializer = Type[Serializer],
+        context : Optional[dict[str, Any]] = None,
+        many : bool = False
+) -> Callable:
+    """Decorator to preprocess the request data validation"""
+
+    def decorator(
+            func : Callable[[DRFRequest, tuple[Any, ...], dict[str, Any]], DRFResponse],
+              ) -> Callable:
+        
+        @wraps(func)
+        def wrapper(
+            self,
+            request : DRFRequest,
+            *args : tuple[Any, ...],
+            **kwargs : dict[str, Any]
+        ):
+            """Validate the request data using the provided serializer class"""
+            local_context : dict[str, Any] = (context or {}).copy()
+            local_context['request'] = request
+
+            data: dict[str, Any] = {}
+            if request.method in ("POST", "PUT", "PATCH"):
+                data = request.data
+            else:
+                data = request.query_params
+
+
+            if 'slug' in kwargs:
+                local_context['slug'] = kwargs['slug']
+
+            if 'object' in kwargs:
+                local_context['object'] = kwargs['object']
+
+            serializer : Serializer = serializer_class(
+                instance = local_context.get('object'),
+                data=data,
+                context = local_context,
+                many = many,
+                partial = request.method == 'PATCH'
+
+            )
+
+            if serializer.is_valid():
+                kwargs['validated_data'] = serializer.validated_data.copy()
+                kwargs['serializer'] = serializer
+                return func(self, request, *args, **kwargs)
+            else:
+                return DRFResponse(
+                    data=serializer.errors,
+                    status=HTTP_400_BAD_REQUEST
+                )
+        return wrapper
+    return decorator
+
+from django.core.cache import cache
+
+def rate_limit(action_name, limit=10, timeout=60):
+    def decorator(func):
+        def wrapper(self, request, *args, **kwargs):
+
+            user_key = request.user.id if request.user.is_authenticated else "anon"
+            cache_key = f"{user_key}:{action_name}:{request.META.get('REMOTE_ADDR','')}"
+
+            if cache.get(cache_key) is None:
+                cache.set(cache_key, 0, timeout=timeout)
+
+            count = cache.incr(cache_key)
+
+            if count > limit:
+                from rest_framework.response import Response
+                return Response(
+                    {"detail": "Rate limit exceeded"},
+                    status=429
+                )
+
+            return func(self, request, *args, **kwargs)
+        return wrapper
+    return decorator
