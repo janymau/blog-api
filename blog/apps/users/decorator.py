@@ -73,7 +73,6 @@ def validate_serializer_data(
                 )
         return wrapper
     return decorator
-
 def rate_limit(key_prefix, limit, timeout):
     """Decorator for user request limit"""
 
@@ -82,9 +81,9 @@ def rate_limit(key_prefix, limit, timeout):
 
         def wrapper(
             self,
-            request : DRFRequest,
-            *args : tuple[Any, ...],
-            **kwargs : dict[str, Any]
+            request: DRFRequest,
+            *args: tuple[Any, ...],
+            **kwargs: dict[str, Any]
         ):
             if request.user.is_authenticated:
                 key = f"{key_prefix}:{request.user.id}"
@@ -93,17 +92,18 @@ def rate_limit(key_prefix, limit, timeout):
                 key = f"{key_prefix}:{ip}"
 
             count = cache.get(key, 0)
+
             if count >= limit:
                 return DRFResponse(
-                    {"detail" : "To many requests.  Try again later."},
+                    {"detail": "Too many requests. Try again later."},
                     status=HTTP_429_TOO_MANY_REQUESTS
                 )
 
-            cache.incr(key)
-
             if count == 0:
-                cache.expire(key, timeout)
-            
+                cache.set(key, 1, timeout=timeout)
+            else:
+                cache.incr(key)
+
             return func(self, request, *args, **kwargs)
         return wrapper
     return decorator

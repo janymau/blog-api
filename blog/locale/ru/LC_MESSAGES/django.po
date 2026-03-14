@@ -1,0 +1,287 @@
+# Russian translations
+# Copyright (C) 2026
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-14 01:45+0500\n"
+"PO-Revision-Date: 2026-03-13 22:45+0500\n"
+"Last-Translator: \n"
+"Language-Team: Russian\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: .\apps\blogs\models.py:28
+#, fuzzy
+#| msgid "Category name"
+msgid "Category name in English"
+msgstr "Название категории (на английском)"
+
+#: .\apps\blogs\models.py:34
+#, fuzzy
+#| msgid "Category name"
+msgid "Category name in Russian"
+msgstr "Название категории (на русском)"
+
+#: .\apps\blogs\models.py:40
+#, fuzzy
+#| msgid "Category name"
+msgid "Category name in Kazakh"
+msgstr "Название категории (на казахском)"
+
+#: .\apps\blogs\models.py:46 .\apps\blogs\models.py:81
+#: .\apps\blogs\models.py:105
+msgid "Readable url"
+msgstr "Читаемый URL"
+
+#: .\apps\blogs\models.py:76
+msgid "Tag name"
+msgstr "Название тега"
+
+#: .\apps\blogs\models.py:95
+msgid "Post author"
+msgstr "Автор поста"
+
+#: .\apps\blogs\models.py:100
+msgid "Title"
+msgstr "Заголовок"
+
+#: .\apps\blogs\models.py:109
+msgid "Post body"
+msgstr "Содержимое поста"
+
+#: .\apps\blogs\models.py:116
+msgid "Category"
+msgstr "Категория"
+
+#: .\apps\blogs\models.py:122
+msgid "Tags"
+msgstr "Теги"
+
+#: .\apps\blogs\models.py:128
+msgid "Post status"
+msgstr "Статус поста"
+
+#: .\apps\blogs\models.py:133
+msgid "Created date"
+msgstr "Дата создания"
+
+#: .\apps\blogs\models.py:138
+msgid "Updated date"
+msgstr "Дата обновления"
+
+#: .\apps\blogs\models.py:145
+msgid "comments"
+msgstr "Комментарии"
+
+#: .\apps\blogs\serializers.py:102
+#, python-format
+msgid "Category with id %(data)s does not exist"
+msgstr "Категория с id %(data)s не существует"
+
+#: .\apps\blogs\serializers.py:111
+msgid "Invalid category format"
+msgstr "Неверный формат категории"
+
+#: .\apps\blogs\views.py:135 .\apps\blogs\views.py:152
+#: .\apps\blogs\views.py:183 .\apps\blogs\views.py:214
+#: .\apps\blogs\views.py:248
+msgid "Post not found"
+msgstr "Пост не найден"
+
+#: .\apps\blogs\views.py:156
+msgid "You cannot edit this post"
+msgstr "Вы не можете редактировать этот пост"
+
+#: .\apps\blogs\views.py:186
+msgid "You can handle only your post's"
+msgstr "Вы можете управлять только своими постами"
+
+#: .\apps\service\templates\welcome_new_user_template.txt:4
+msgid "Thank you for registering in our BLOG API."
+msgstr "Спасибо за регистрацию в нашем BLOG API."
+
+#: .\apps\service\templates\welcome_new_user_template.txt:5
+msgid "We are happy to see you!"
+msgstr "Мы рады вас видеть!"
+
+#: .\apps\service\templates\welcome_new_user_template.txt:7
+msgid ""
+"\n"
+"Your account has been successfully created. You can now log in and start "
+"exploring our blog platform."
+msgstr ""
+"\n"
+"Ваш аккаунт успешно создан. Теперь вы можете войти и начать "
+"пользоваться нашей блог-платформой."
+
+#: .\apps\service\templates\welcome_new_user_template.txt:11
+msgid ""
+"\n"
+"Here's what you can do next:\n"
+"- Complete your profile\n"
+"- Subscribe to topics of interest\n"
+"- Start writing and publishing articles\n"
+"- Engage with other bloggers\n"
+msgstr ""
+"\n"
+"Вот что вы можете сделать дальше:\n"
+"- Заполните свой профиль\n"
+"- Подпишитесь на интересующие темы\n"
+"- Начните писать и публиковать статьи\n"
+"- Общайтесь с другими блогерами\n"
+
+#: .\apps\service\templates\welcome_new_user_template.txt:19
+msgid ""
+"\n"
+"If you have any questions or need assistance, feel free to contact our "
+"support team.\n"
+msgstr ""
+"\n"
+"Если у вас возникнут вопросы или потребуется помощь, не стесняйтесь "
+"обращаться в нашу службу поддержки.\n"
+
+#: .\apps\service\templates\welcome_new_user_template.txt:24
+#, python-format
+msgid ""
+"\n"
+"Email sent on: %(date)s\n"
+msgstr ""
+"\n"
+"Письмо отправлено: %(date)s\n"
+
+#: .\apps\service\templates\welcome_new_user_template.txt:28
+msgid ""
+"\n"
+"Best regards,\n"
+"The BLOG API Team\n"
+msgstr ""
+"\n"
+"С уважением,\n"
+"Команда BLOG API\n"
+
+#: .\apps\service\templates\welcome_user_subject_template.txt:5
+#, python-format
+msgid ""
+"\n"
+"Hello %(first_name)s,\n"
+msgstr ""
+"\n"
+"Здравствуйте, %(first_name)s!\n"
+
+#: .\apps\users\models.py:36
+msgid "Email field is required"
+msgstr "Поле электронной почты обязательно для заполнения"
+
+#: .\apps\users\models.py:40
+msgid "First name field is required"
+msgstr "Поле имени обязательно для заполнения"
+
+#: .\apps\users\models.py:44
+msgid "Last name field is required"
+msgstr "Поле фамилии обязательно для заполнения"
+
+#: .\apps\users\models.py:117
+msgid "User email address / Unique nickname"
+msgstr "Электронная почта / Уникальный никнейм"
+
+#: .\apps\users\models.py:122
+msgid "User first name"
+msgstr "Имя пользователя"
+
+#: .\apps\users\models.py:128
+msgid "User last name"
+msgstr "Фамилия пользователя"
+
+#: .\apps\users\models.py:134
+msgid "Password"
+msgstr "Пароль"
+
+#: .\apps\users\models.py:135
+msgid "Hashed user password"
+msgstr "Хэш пароля пользователя"
+
+#: .\apps\users\models.py:141
+msgid "Active status"
+msgstr "Статус активности"
+
+#: .\apps\users\models.py:142
+msgid "True if the user is active and has an access to request the data"
+msgstr "True, если пользователь активен и имеет доступ к запросам"
+
+#: .\apps\users\models.py:148
+msgid "Staff status"
+msgstr "Статус сотрудника"
+
+#: .\apps\users\models.py:149
+msgid "True if user is part of company"
+msgstr "True, если пользователь является частью компании"
+
+#: .\apps\users\models.py:154
+msgid "User joined date"
+msgstr "Дата регистрации"
+
+#: .\apps\users\models.py:160
+msgid "User avatar"
+msgstr "Аватар пользователя"
+
+#: .\apps\users\models.py:167
+msgid "Preferred language"
+msgstr "Предпочитаемый язык"
+
+#: .\apps\users\models.py:173 .\apps\users\serializers.py:136
+#: .\apps\users\serializers.py:180
+msgid "Timezone"
+msgstr "Часовой пояс"
+
+#: .\apps\users\models.py:184
+msgid "Custom User"
+msgstr "Пользователь"
+
+#: .\apps\users\models.py:185
+msgid "Custom Users"
+msgstr "Пользователи"
+
+#: .\apps\users\serializers.py:35
+msgid ""
+"Invalid timezone. Use a valid IANA timezone name, for example: Asia/Almaty."
+msgstr ""
+"Недопустимый часовой пояс. Используйте корректное название часового пояса "
+"IANA, например: Asia/Almaty."
+
+#: .\apps\users\serializers.py:90
+#, python-format
+msgid "User with this email %(email)s does not exist"
+msgstr "Пользователь с электронной почтой %(email)s не существует"
+
+#: .\apps\users\serializers.py:95
+msgid "Incorrect password"
+msgstr "Неверный пароль"
+
+#: .\apps\users\serializers.py:131
+msgid "User preferred language"
+msgstr "Предпочитаемый язык пользователя"
+
+#: .\apps\users\serializers.py:155
+#, fuzzy, python-format
+#| msgid "This email address %(value) already exist"
+msgid "This email address %(value)s already exist"
+msgstr "Электронная почта %(value)s уже используется"
+
+#: .\apps\users\serializers.py:171
+msgid "Preferred Language"
+msgstr "Предпочитаемый язык"
+
+#: .\apps\users\views.py:162
+msgid "Refresh token required"
+msgstr "Требуется refresh токен"
+
+#: .\apps\users\views.py:168
+msgid "Invalid refresh token"
+msgstr "Недействительный refresh токен"

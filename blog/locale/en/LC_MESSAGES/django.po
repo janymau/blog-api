@@ -1,0 +1,164 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-13 22:45+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\apps\blogs\models.py:28
+msgid "Category name"
+msgstr ""
+
+#: .\apps\blogs\models.py:33 .\apps\blogs\models.py:48
+#: .\apps\blogs\models.py:72
+msgid "Readable url"
+msgstr ""
+
+#: .\apps\blogs\models.py:43
+msgid "Tag name"
+msgstr ""
+
+#: .\apps\blogs\models.py:62
+msgid "Post author"
+msgstr ""
+
+#: .\apps\blogs\models.py:67
+msgid "Title"
+msgstr ""
+
+#: .\apps\blogs\models.py:76
+msgid "Post body"
+msgstr ""
+
+#: .\apps\blogs\models.py:83
+msgid "Category"
+msgstr ""
+
+#: .\apps\blogs\models.py:89
+msgid "Tags"
+msgstr ""
+
+#: .\apps\blogs\models.py:95
+msgid "Post status"
+msgstr ""
+
+#: .\apps\blogs\models.py:100
+msgid "Created date"
+msgstr ""
+
+#: .\apps\blogs\models.py:105
+msgid "Updated date"
+msgstr ""
+
+#: .\apps\blogs\models.py:112
+msgid "comments"
+msgstr ""
+
+#: .\apps\blogs\serializers.py:94
+#, python-format
+msgid "Category with id %(data)s does not exist"
+msgstr ""
+
+#: .\apps\blogs\serializers.py:103
+msgid "Invalid category format"
+msgstr ""
+
+#: .\apps\blogs\views.py:115 .\apps\blogs\views.py:132
+#: .\apps\blogs\views.py:163 .\apps\blogs\views.py:194
+#: .\apps\blogs\views.py:228
+msgid "Post not found"
+msgstr ""
+
+#: .\apps\blogs\views.py:136
+msgid "You cannot edit this post"
+msgstr ""
+
+#: .\apps\blogs\views.py:166
+msgid "You can handle only your post's"
+msgstr ""
+
+#: .\apps\users\models.py:109
+msgid "User email address / Unique nickname"
+msgstr ""
+
+#: .\apps\users\models.py:114
+msgid "User first name"
+msgstr ""
+
+#: .\apps\users\models.py:120
+msgid "User last name"
+msgstr ""
+
+#: .\apps\users\models.py:126
+msgid "Password"
+msgstr ""
+
+#: .\apps\users\models.py:127
+msgid "Hashed user password"
+msgstr ""
+
+#: .\apps\users\models.py:133
+msgid "Active status"
+msgstr ""
+
+#: .\apps\users\models.py:134
+msgid "True if the user is active and has an access to request the data"
+msgstr ""
+
+#: .\apps\users\models.py:140
+msgid "Staff status"
+msgstr ""
+
+#: .\apps\users\models.py:141
+msgid "True if user is part of company"
+msgstr ""
+
+#: .\apps\users\models.py:146
+msgid "User joined date"
+msgstr ""
+
+#: .\apps\users\models.py:152
+msgid "User avatar"
+msgstr ""
+
+#: .\apps\users\models.py:163
+msgid "Custom User"
+msgstr ""
+
+#: .\apps\users\models.py:164
+msgid "Custom Users"
+msgstr ""
+
+#: .\apps\users\serializers.py:112
+#, python-format
+msgid "User with this email %(email)s does not exist"
+msgstr ""
+
+#: .\apps\users\serializers.py:122
+msgid "Incorrect password"
+msgstr ""
+
+#: .\apps\users\serializers.py:212
+msgid "This email address %(value) already exist"
+msgstr ""
+
+#: .\apps\users\views.py:151
+msgid "Refresh token required"
+msgstr ""
+
+#: .\apps\users\views.py:157
+msgid "Invalid refresh token"
+msgstr ""

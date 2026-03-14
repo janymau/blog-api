@@ -1,5 +1,6 @@
 # Python modules
 from typing import Any, Optional
+import pytz
 
 # Django modules
 from rest_framework.serializers import (
@@ -15,6 +16,9 @@ from rest_framework.serializers import (
 )
 from django.core.exceptions import ValidationError
 from django.utils.text import slugify
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext
+from django.utils.formats import date_format as django_date_format
 
 # Project modules
 from apps.blogs.models import Category,Tag,Comment, Post
@@ -67,6 +71,8 @@ class CategoryBaseSerializer(ModelSerializer):
     Base serializer for Category Model
     """
 
+
+
     class Meta:
         model = Category
         fields = '__all__'
@@ -77,10 +83,12 @@ class CategoryListSerializer(CategoryBaseSerializer):
     Serializer for Category list
     """
 
+
     class Meta:
         """Customization of metadata"""
         model = Category
         fields = ("id", 'name', "slug")
+
 
 class CategoryField(Field):
 
@@ -89,19 +97,30 @@ class CategoryField(Field):
             try:
                 return Category.objects.get(pk=data)
             except Category.DoesNotExist:
-                raise ValidationError({"category": f"Category with id {data} does not exist"})
+                raise ValidationError({"category": [gettext("Category with id %(data)s does not exist") % {"data" : data}]})
         
         if isinstance(data, str):
             category, _ = Category.objects.get_or_create(
-                name=data,
-                defaults={'slug': slugify(data)}
+                name_en=data,
+                defaults={
+            'slug': slugify(data),
+            'name_ru': data,
+            'name_kz': data,
+        }
             )
             return category
 
-        raise ValidationError({"category": "Invalid category format"})
+        raise ValidationError({"category": _("Invalid category format")})
 
     def to_representation(self, value):
         return value.id
+    
+    def to_representation(self, value):
+        return {
+                'id': value.id,
+                'name': value.localized_name,   
+                'slug': value.slug,
+        }
     
 
 class TagBaseSerializer(ModelSerializer):
@@ -143,8 +162,9 @@ class TagListField(ListField):
         Tag.objects.bulk_create(new_tags)
         all_tags = list(existing_tags) + new_tags
 
-        print(all_tags)
-        return all_tags
+        all_tags = list(Tag.objects.filter(name__in=tag_names))
+
+        return all_tags    
     
     def to_representation(self, value):
         return [tag.id for tag in value]
@@ -236,14 +256,42 @@ class PostUpdateSerializer(PostBaseSerializer):
         return instance
 
 class PostListSerializer(PostBaseSerializer):
-    """Serizalizer for listing post's"""
+    """Serializer for listing posts"""
 
+    created_at = SerializerMethodField()
     author = UserForeignSerializer()
+    comment_count = SerializerMethodField(method_name="get_comment_count")
+    tags = TagListSerializer(many=True)
+    category = CategoryField() 
 
-    comment_count = SerializerMethodField(
-        method_name = "get_comment_count",
-    )
-    tags = TagListSerializer(many = True)
+    def get_category_name(self, obj) -> str:
+        if obj.category is None:
+            return None
+        return obj.category.localized_name
+
+    def get_comment_count(self, obj: Post) -> int:
+        return getattr(obj, "comment_count", 0)
+
+    def _localized_datetime(self, dt) -> str:
+        request = self.context.get('request')
+
+        user_tz_name = 'UTC'
+        if request and request.user.is_authenticated:
+            user_tz_name = getattr(request.user, 'timezone', 'UTC') or 'UTC'
+
+        try:
+            tz = pytz.timezone(user_tz_name)
+        except pytz.UnknownTimeZoneError:
+            tz = pytz.utc
+
+        local_dt = dt.astimezone(tz)
+        return django_date_format(local_dt, format='DATETIME_FORMAT', use_l10n=True)
+
+    def get_created_at(self, obj) -> str:
+        return self._localized_datetime(obj.created_at)
+
+    def get_updated_at(self, obj) -> str:
+        return self._localized_datetime(obj.updated_at)
 
     class Meta:
         model = Post
@@ -256,12 +304,9 @@ class PostListSerializer(PostBaseSerializer):
             'body',
             'tags',
             'comment_count',
-            'status'
-
+            'status',
+            'created_at',
         )
-    
-    def get_comment_count(self, obj : Post) -> int:
-        return getattr(obj, "comment_count", 0)
 
 class PostDeleteSerializer(PostBaseSerializer):
     """
