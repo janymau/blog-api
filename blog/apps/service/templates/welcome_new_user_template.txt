@@ -1,0 +1,31 @@
+{% load i18n %}
+{% load tz %}
+
+{% trans "Thank you for registering in our BLOG API." %}
+{% trans "We are happy to see you!" %}
+
+{% blocktrans %}
+Your account has been successfully created. You can now log in and start exploring our blog platform.
+{% endblocktrans %}
+
+{% blocktrans %}
+Here's what you can do next:
+- Complete your profile
+- Subscribe to topics of interest
+- Start writing and publishing articles
+- Engage with other bloggers
+{% endblocktrans %}
+
+{% blocktrans %}
+If you have any questions or need assistance, feel free to contact our support team.
+{% endblocktrans %}
+
+{% now "Y-m-d H:i" as current_date %}
+{% blocktrans with date=current_date %}
+Email sent on: {{ date }}
+{% endblocktrans %}
+
+{% blocktrans %}
+Best regards,
+The BLOG API Team
+{% endblocktrans %}

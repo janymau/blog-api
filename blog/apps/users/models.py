@@ -1,14 +1,25 @@
 # Python modules
 from typing import Any
 
+
 # Django modules
 from django.db.models import CharField, EmailField, BooleanField, ImageField, DateTimeField
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.core.exceptions import ValidationError
 from django.contrib.auth.password_validation import validate_password
+from django.utils.translation import gettext_lazy as _ 
+
 
 # Project modules
 from apps.users.validators import check_domain_name
+
+
+SUPPORTED_LANGUAGES = [
+    ('en', 'English'),
+    ('ru', 'Russian'),
+    ('kz', 'Kazakh'),
+]
+
 
 class CustomUserManager(BaseUserManager):
     """Custom user manager"""
@@ -24,15 +35,15 @@ class CustomUserManager(BaseUserManager):
         """Get user instance"""
         if not email:
             raise ValidationError(
-                message="Email field is required", code='email_empty'
+                message=_("Email field is required"), code='email_empty'
             )
         if not first_name:
             raise ValidationError(
-                message="First name field is required", code='first_name_empty'
+                message=_("First name field is required"), code='first_name_empty'
             )
         if not last_name:
             raise ValidationError(
-                message="Last name field is required", code='last_name_empty'
+                message=_("Last name field is required"), code='last_name_empty'
             )
         
         new_user : 'CustomUser' = self.model(
@@ -105,50 +116,63 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         db_index=True,
         validators=[check_domain_name],
         verbose_name='Email address',
-        help_text='User email address / Unique nickname'
+        help_text=_('User email address / Unique nickname')
     )
 
     first_name = CharField(
         max_length=FIRST_NAME_MAX_LENGTH,
-        verbose_name='User first name'
+        verbose_name=_('User first name')
         
     )
 
     last_name = CharField(
         max_length=LAST_NAME_MAX_LENGTH,
-        verbose_name='User last name'
+        verbose_name=_('User last name')
     )
 
     password = CharField(
         max_length=PASSWORD_MAX_LENGTH,
         validators=[validate_password],
-        verbose_name='Password',
-        help_text='Hashed user password'
+        verbose_name=_('Password'),
+        help_text=_('Hashed user password')
     )
 
     # True if the user can make the requests to the backend
     is_active = BooleanField(
         default=True,
-        verbose_name='Active status',
-        help_text= 'True if the user is active and has an access to request the data'   
+        verbose_name=_('Active status'),
+        help_text= _('True if the user is active and has an access to request the data')   
     )
 
     # True if the user has admin rights
     is_staff = BooleanField(
         default=False,
-        verbose_name='Staff status',
-        help_text='True if user is part of company'
+        verbose_name=_('Staff status'),
+        help_text=_('True if user is part of company')
     )
 
     date_joined = DateTimeField(
         auto_now_add=True,
-        verbose_name='User joined date'
+        verbose_name=_('User joined date')
     )
 
     avatar = ImageField(
         blank=True,
         null=True,
-        verbose_name='User avatar'
+        verbose_name=_('User avatar')
+    )
+
+    preferred_language = CharField(
+        max_length=10,
+        choices=SUPPORTED_LANGUAGES,
+        default='en',
+        verbose_name=_('Preferred language')
+    )
+
+    timezone = CharField(
+        max_length=64,
+        default='UTC',
+        verbose_name=_('Timezone')
     )
 
 
@@ -159,8 +183,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         """Meta options for CustomUser"""
-        verbose_name = 'Custom User'
-        verbose_name_plural = 'Custom Users'
+        verbose_name = _('Custom User')
+        verbose_name_plural = _('Custom Users')
         ordering = ["-date_joined"]
 
 

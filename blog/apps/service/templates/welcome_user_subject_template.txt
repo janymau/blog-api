@@ -1,0 +1,7 @@
+{% load i18n %}
+{% load tz %}
+
+
+{% blocktrans with first_name=user.first_name %}
+Hello {{ first_name }},
+{% endblocktrans %}
