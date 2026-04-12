@@ -1,0 +1,76 @@
+services:
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  init:
+    build: .
+    command: sh -c "python manage.py migrate --noinput && python manage.py collectstatic --noinput"
+    env_file:
+      - settings/.env
+    volumes:
+      - sqlite_data:/home/appuser/app/data
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  web:
+    build: .
+    command: daphne -b 0.0.0.0 -p 8000 settings.asgi:application
+    ports:
+      - "8000:8000"
+    env_file:
+      - settings/.env
+    volumes:
+      - sqlite_data:/home/appuser/app/data
+    depends_on:
+      redis:
+        condition: service_healthy
+      init:
+        condition: service_completed_successfully
+
+  celery_worker:
+    build: .
+    command: celery -A settings worker -l info
+    env_file:
+      - settings/.env
+    volumes:
+      - sqlite_data:/home/appuser/app/data
+    depends_on:
+      redis:
+        condition: service_healthy
+      init:
+        condition: service_completed_successfully
+
+  celery_beat:
+    build: .
+    command: celery -A settings beat -l info
+    env_file:
+      - settings/.env
+    volumes:
+      - sqlite_data:/home/appuser/app/data
+    depends_on:
+      redis:
+        condition: service_healthy
+      init:
+        condition: service_completed_successfully
+
+  flower:
+    build: .
+    command: celery -A settings flower --port=5555 --basic-auth=${BLOG_FLOWER_USER}:${BLOG_FLOWER_PASSWORD}
+    ports:
+      - "5555:5555"
+    env_file:
+      - settings/.env
+    depends_on:
+      redis:
+        condition: service_healthy
+      init:
+        condition: service_completed_successfully
+
+volumes:
+  sqlite_data:

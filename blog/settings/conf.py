@@ -1,6 +1,7 @@
 # Python modules
 from decouple import config
 from datetime import timedelta
+import os
 
 
 # Env id
@@ -9,8 +10,8 @@ ENV_POSSIBLE_OPTIONS = (
     'prod'
 )
 ENV_ID = config("BLOG_ENV_ID", cast = str)
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('BLOG_SECRET_KEY')
+REDIS_URL = config('REDIS_URL')
 
 # DJANGO REST FRAMEWORK
 REST_FRAMEWORK = {
@@ -65,10 +66,25 @@ SIMPLE_JWT = {
     # "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
+# Celery
+CELERY_BROKER_URL        = config('BLOG_CELERY_BROKER_URL', default='redis://127.0.0.1:6379/1')
+CELERY_RESULT_BACKEND    = config('BLOG_CELERY_BROKER_URL', default='redis://127.0.0.1:6379/1')
+CELERY_ACCEPT_CONTENT    = ['json']
+CELERY_TASK_SERIALIZER   = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE          = 'UTC'
+
+
+REDIS_URL = config('REDIS_URL', default='redis://127.0.0.1:6379')
+
+CELERY_BROKER_URL     = config('BLOG_CELERY_BROKER_URL', default=f'{REDIS_URL}/3')
+CELERY_RESULT_BACKEND = config('BLOG_CELERY_BROKER_URL', default=f'{REDIS_URL}/3')
+
+
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": f"{REDIS_URL}/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
@@ -84,8 +100,15 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
 }
 
-
-
-
+CHANNEL_LAYERS = {
+    "default" : {
+        "BACKEND" : "channels_redis.core.RedisChannelLayer",
+        "CONFIG" : {
+            "hosts": [f"{REDIS_URL}/2"], 
+            "capacity" : 1500,
+            "expiry" : 10,
+        },
+    },
+}
 
 

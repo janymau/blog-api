@@ -82,8 +82,9 @@ class Tag(Model):
     )
 
 class Status(TextChoices):
-    DRAFT = 'draft', "Draft"
-    PUBLISHED = 'published', 'Published'
+        DRAFT     = 'draft',     'Draft'
+        PUBLISHED = 'published', 'Published'
+        SCHEDULED = 'scheduled', 'Scheduled'
 
 
 class Post(Model):
@@ -140,6 +141,8 @@ class Post(Model):
         auto_now=True,
         verbose_name=_('Updated date')
     )
+    
+    publish_at = DateTimeField(null=True, blank=True) 
 
 class Comment(Model):
     post = ForeignKey(

@@ -30,6 +30,7 @@ from apps.users.serializers import (
 )
 from apps.users.decorator import validate_serializer_data, rate_limit
 from apps.service.services import send_welcome_user_email
+from apps.users.tasks import send_welcome_email
 
 
 logger = logging.getLogger(__name__)
@@ -175,6 +176,8 @@ class CustomUserViewSet(ViewSet):
         )
 
         send_welcome_user_email(user)
+        send_welcome_email.delay(user.email, user.username)
+
 
         return DRFResponse(
             data={
