@@ -25,6 +25,9 @@ from rest_framework.status import (
     HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED,
     HTTP_403_FORBIDDEN, HTTP_429_TOO_MANY_REQUESTS
 )
+from django.db.models import Count
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 # Project modules
 from apps.blogs.serializers import (
@@ -37,6 +40,7 @@ from apps.blogs.serializers import (
 from apps.blogs.models import Post, Category, Tag, Comment
 from apps.users.models import CustomUser
 from apps.blogs.decorator import validate_serializer_data, rate_limit
+from apps.notifications.tasks import process_new_comment
 
 
 SUPPORTED_LANGUAGES = ['en', 'ru', 'kz'] 
@@ -318,9 +322,10 @@ class PostViewSet(ViewSet):
 
     def retrieve(self, request: DRFRequest, slug: str = None, *args, **kwargs) -> DRFResponse:
         """Retrieve a post by slug"""
-        try:
-            post = Post.objects.get(slug=slug, status='published')
-        except Post.DoesNotExist:
+        post = Post.objects.filter(slug=slug, status='published') \
+    .annotate(comment_count=Count('comments')) \
+    .first()
+        if not post:
             return DRFResponse({"detail": _("Post not found")}, status=HTTP_400_BAD_REQUEST)
 
         return DRFResponse(PostListSerializer(post, context={'request': request}).data)
@@ -394,7 +399,12 @@ class PostViewSet(ViewSet):
             author=request.user,
             body=serializer.validated_data['body']
         )
+
+        process_new_comment.delay(comment.id)
+        
+
         return DRFResponse(CommentListSerializer(comment).data, status=HTTP_201_CREATED)
+    
 
     @extend_schema(
         summary='List comments for a post',

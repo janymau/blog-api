@@ -4,6 +4,7 @@ from rest_framework.routers import DefaultRouter
 
 # Project modules
 from apps.blogs.views import PostViewSet
+from apps.notifications.sse import post_stream
 
 
 router : DefaultRouter = DefaultRouter(
@@ -17,5 +18,8 @@ router.register(
 )
 
 urlpatterns = [
-    path("", include(router.urls))
+    path("posts/stream/", post_stream, name='post-stream'),
+    path("", include(router.urls)),
 ]
+
+
