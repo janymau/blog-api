@@ -2,6 +2,7 @@
 venv/
 blog/settings/env/*
 blog/settings/.env
+blog/settings/.env.example
 
 # Logs
 blog/logs/

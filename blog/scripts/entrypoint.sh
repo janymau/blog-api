@@ -17,5 +17,6 @@ if [ "${BLOG_SEED_DB}" = "true" ]; then
   echo "Seeding database..."
   python manage.py seed
 fi
+python manage.py collectstatic --noinput
 
 exec "$@"

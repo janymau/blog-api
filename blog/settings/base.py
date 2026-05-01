@@ -110,9 +110,16 @@ LOCALE_PATHS = [
 ]
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+MEDIA_ROOT = BASE_DIR / "media"        
+MEDIA_URL = "/media/"
+
+STATIC_ROOT = BASE_DIR / "staticfiles" 
+STATIC_URL = "/static/"
+
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
 
 # LOGGING
 LOGGING = {
